@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "states": {
+    "failed": {
+      "selection": "weighted_random",
+      "clips": [
+        {
+          "file": "failed.mp4",
+          "enabled": true,
+          "weight": 1
+        },
+        {
+          "file": "failed2.mp4",
+          "enabled": true,
+          "weight": 1
+        },
+        {
+          "file": "failed3.mp4",
+          "enabled": true,
+          "weight": 1
+        }
+      ]
+    },
+    "idle": {
+      "selection": "weighted_random",
+      "clips": [
+        {
+          "file": "idle.mp4",
+          "enabled": true,
+          "weight": 1
+        },
+        {
+          "file": "idle2.mp4",
+          "enabled": true,
+          "weight": 1
+        },
+        {
+          "file": "idle3.mp4",
+          "enabled": true,
+          "weight": 1
+        }
+      ]
+    },
+    "jumping": {
+      "selection": "weighted_random",
+      "transition_policy": "finish_current_clip",
+      "clips": [
+        {
+          "file": "jumping.mp4",
+          "enabled": true,
+          "weight": 1
+        },
+        {
+          "file": "jumping2.mp4",
+          "enabled": true,
+          "weight": 1
+        },
+        {
+          "file": "jumping3.mp4",
+          "enabled": true,
+          "weight": 1
+        }
+      ]
+    },
+    "review": {
+      "selection": "weighted_random",
+      "clips": [
+        {
+          "file": "review.mp4",
+          "enabled": true,
+          "weight": 1
+        }
+      ]
+    },
+    "running": {
+      "selection": "weighted_random",
+      "clips": [
+        {
+          "file": "running-left.mp4",
+          "enabled": true,
+          "weight": 1
+        },
+        {
+          "file": "running-left2.mp4",
+          "enabled": true,
+          "weight": 1
+        },
+        {
+          "file": "running-right.mp4",
+          "enabled": true,
+          "weight": 1
+        },
+        {
+          "file": "running-right2.mp4",
+          "enabled": true,
+          "weight": 1
+        }
+      ]
+    },
+    "running-left": {
+      "selection": "weighted_random",
+      "clips": [
+        {
+          "file": "running-left.mp4",
+          "enabled": true,
+          "weight": 1
+        },
+        {
+          "file": "running-left2.mp4",
+          "enabled": true,
+          "weight": 1
+        }
+      ]
+    },
+    "running-right": {
+      "selection": "weighted_random",
+      "clips": [
+        {
+          "file": "running-right.mp4",
+          "enabled": true,
+          "weight": 1
+        },
+        {
+          "file": "running-right2.mp4",
+          "enabled": true,
+          "weight": 1
+        }
+      ]
+    },
+    "waiting": {
+      "selection": "weighted_random",
+      "clips": [
+        {
+          "file": "waiting.mp4",
+          "enabled": true,
+          "weight": 1
+        }
+      ]
+    },
+    "waving": {
+      "selection": "weighted_random",
+      "transition_policy": "finish_current_clip",
+      "clips": [
+        {
+          "file": "waving.mp4",
+          "enabled": true,
+          "weight": 1
+        }
+      ]
+    }
+  }
+}

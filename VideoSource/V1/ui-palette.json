@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "algorithm": "oklab-kmeans-v1",
+  "source": {
+    "file": "idle.mp4",
+    "sha256": "9e78dfcc4ca65f2b9c83d874a2dfd38e3fdacf2d2320a30733c669853e2de1c8",
+    "frame_index": 0
+  },
+  "colors": {
+    "base": "#09070F",
+    "accent": "#6F5BB7",
+    "light": "#DEE3F3"
+  }
+}

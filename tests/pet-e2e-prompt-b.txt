@@ -1,0 +1,1 @@
+PET_E2E_CLI_B：只读联调。运行 PowerShell Start-Sleep -Seconds 7，然后只回复 PET_E2E_CLI_B_COMPLETE。不要修改或读取项目文件。

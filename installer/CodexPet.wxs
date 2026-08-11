@@ -1,0 +1,116 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package
+      Name="Codex Pet"
+      Manufacturer="Codex Pet"
+      Version="$(var.ProductVersion)"
+      ProductCode="$(var.ProductCode)"
+      UpgradeCode="D9ED456A-A11A-4A71-90B1-C746246F7C39"
+      Scope="perUser"
+      Language="2052">
+    <SummaryInformation Description="Codex Pet native Windows overlay" />
+    <MajorUpgrade DowngradeErrorMessage="已安装更新版本的 Codex Pet。" />
+    <MediaTemplate EmbedCab="yes" />
+    <Property Id="SKIPINTEGRATIONCLEANUP" Secure="yes" />
+    <Property Id="ARPNOMODIFY" Value="1" />
+    <SetProperty Id="ARPINSTALLLOCATION" Value="[INSTALLFOLDER]" After="CostFinalize" />
+
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="ProgramsFolder" Name="Programs">
+        <Directory Id="INSTALLFOLDER" Name="CodexPet">
+          <Directory Id="VideoSourceFolder" Name="VideoSource">
+            <Directory Id="VideoV1Folder" Name="V1" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </StandardDirectory>
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="Codex Pet" />
+    </StandardDirectory>
+
+    <Component Id="MainExecutableComponent" Directory="INSTALLFOLDER" Guid="90E1B0BD-3CA9-4A0C-9A24-2E3621E6082A">
+      <File Id="CodexPetExecutable" Source="$(var.NativePackageRoot)\CodexPet.exe" />
+      <RemoveFolder Id="RemoveVideoV1Folder" Directory="VideoV1Folder" On="uninstall" />
+      <RemoveFolder Id="RemoveVideoSourceFolder" Directory="VideoSourceFolder" On="uninstall" />
+      <RemoveFolder Id="RemoveInstallFolder" Directory="INSTALLFOLDER" On="uninstall" />
+      <RemoveFolder Id="RemoveProgramsFolder" Directory="ProgramsFolder" On="uninstall" />
+      <RegistryValue Root="HKCU" Key="Software\CodexPet\Components" Name="Main" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+
+    <Component Id="RootPayloadComponent" Directory="INSTALLFOLDER" Guid="8A28A2D1-E877-4D9D-A71B-D3A7F7A6BA4D">
+      <File Id="LibMpvFile" Source="$(var.NativePackageRoot)\libmpv-2.dll" />
+      <File Id="InstallationGuideFile" Source="$(var.NativePackageRoot)\INSTALLATION.md" />
+      <File Id="GplLicenseFile" Source="$(var.NativePackageRoot)\LICENSE.GPL-2.0.txt" />
+      <File Id="PackageManifestFile" Source="$(var.NativePackageRoot)\manifest.json" />
+      <File Id="ReadmeFile" Source="$(var.NativePackageRoot)\README.md" />
+      <File Id="ThirdPartyNoticesFile" Source="$(var.NativePackageRoot)\THIRD_PARTY_NOTICES.md" />
+      <RegistryValue Root="HKCU" Key="Software\CodexPet\Components" Name="RootPayload" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+
+    <Component Id="VideoPayloadComponent" Directory="VideoV1Folder" Guid="7C8934E4-C7F0-4E61-958D-37C0E3731578">
+      <File Id="VideoConfigFile" Source="$(var.NativePackageRoot)\VideoSource\V1\video-config.json" />
+      <File Id="UiPaletteFile" Source="$(var.NativePackageRoot)\VideoSource\V1\ui-palette.json" />
+      <File Id="FailedVideo1" Source="$(var.NativePackageRoot)\VideoSource\V1\failed.mp4" />
+      <File Id="FailedVideo2" Source="$(var.NativePackageRoot)\VideoSource\V1\failed2.mp4" />
+      <File Id="FailedVideo3" Source="$(var.NativePackageRoot)\VideoSource\V1\failed3.mp4" />
+      <File Id="IdleVideo1" Source="$(var.NativePackageRoot)\VideoSource\V1\idle.mp4" />
+      <File Id="IdleVideo2" Source="$(var.NativePackageRoot)\VideoSource\V1\idle2.mp4" />
+      <File Id="IdleVideo3" Source="$(var.NativePackageRoot)\VideoSource\V1\idle3.mp4" />
+      <File Id="JumpingVideo1" Source="$(var.NativePackageRoot)\VideoSource\V1\jumping.mp4" />
+      <File Id="JumpingVideo2" Source="$(var.NativePackageRoot)\VideoSource\V1\jumping2.mp4" />
+      <File Id="JumpingVideo3" Source="$(var.NativePackageRoot)\VideoSource\V1\jumping3.mp4" />
+      <File Id="ReviewVideo" Source="$(var.NativePackageRoot)\VideoSource\V1\review.mp4" />
+      <File Id="RunningLeftVideo1" Source="$(var.NativePackageRoot)\VideoSource\V1\running-left.mp4" />
+      <File Id="RunningLeftVideo2" Source="$(var.NativePackageRoot)\VideoSource\V1\running-left2.mp4" />
+      <File Id="RunningRightVideo1" Source="$(var.NativePackageRoot)\VideoSource\V1\running-right.mp4" />
+      <File Id="RunningRightVideo2" Source="$(var.NativePackageRoot)\VideoSource\V1\running-right2.mp4" />
+      <File Id="WaitingVideo" Source="$(var.NativePackageRoot)\VideoSource\V1\waiting.mp4" />
+      <File Id="WavingVideo" Source="$(var.NativePackageRoot)\VideoSource\V1\waving.mp4" />
+      <RegistryValue Root="HKCU" Key="Software\CodexPet\Components" Name="VideoPayload" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+
+    <Component Id="StartMenuShortcutComponent" Directory="ApplicationProgramsFolder" Guid="F9EEBFD4-5A40-45B0-8FCB-D61D0C4127ED">
+      <Shortcut
+          Id="CodexPetStartMenuShortcut"
+          Name="Codex Pet"
+          Description="启动并配置 Codex Pet"
+          Target="[INSTALLFOLDER]CodexPet.exe"
+          WorkingDirectory="INSTALLFOLDER" />
+      <RemoveFolder Id="RemoveApplicationProgramsFolder" On="uninstall" />
+      <RegistryValue Root="HKCU" Key="Software\CodexPet" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+
+    <Feature Id="MainFeature" Title="Codex Pet" Level="1">
+      <ComponentRef Id="MainExecutableComponent" />
+      <ComponentRef Id="RootPayloadComponent" />
+      <ComponentRef Id="VideoPayloadComponent" />
+      <ComponentRef Id="StartMenuShortcutComponent" />
+    </Feature>
+
+    <CustomAction
+        Id="StopPetForRemoval"
+        FileRef="CodexPetExecutable"
+        ExeCommand="--shutdown"
+        Execute="deferred"
+        Impersonate="yes"
+        Return="check" />
+    <CustomAction
+        Id="RemoveOwnedIntegration"
+        FileRef="CodexPetExecutable"
+        ExeCommand="--remove-hooks"
+        Execute="deferred"
+        Impersonate="yes"
+        Return="check" />
+    <CustomAction
+        Id="RepairOwnedIntegrationAfterUpgrade"
+        FileRef="CodexPetExecutable"
+        ExeCommand="--repair-integration"
+        Execute="deferred"
+        Impersonate="yes"
+        Return="check" />
+    <InstallExecuteSequence>
+      <Custom Action="StopPetForRemoval" Before="RemoveOwnedIntegration" Condition="REMOVE=&quot;ALL&quot;" />
+      <Custom Action="RemoveOwnedIntegration" Before="RemoveFiles" Condition="REMOVE=&quot;ALL&quot; AND NOT UPGRADINGPRODUCTCODE AND NOT SKIPINTEGRATIONCLEANUP" />
+      <Custom Action="RepairOwnedIntegrationAfterUpgrade" After="InstallFiles" Condition="WIX_UPGRADE_DETECTED" />
+    </InstallExecuteSequence>
+  </Package>
+</Wix>

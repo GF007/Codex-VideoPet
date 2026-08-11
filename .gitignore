@@ -1,0 +1,44 @@
+# JavaScript / frontend outputs
+node_modules/
+dist/
+dist-editor/
+
+# Rust / Tauri build outputs
+native/target/
+src-tauri/target/
+src-tauri/gen/
+
+# Installer and release outputs
+installer/bin/
+installer/obj/
+dist-native/
+artifacts/
+*.cab
+*.exe
+*.msi
+*.pdb
+*.wixpdb
+*.zip
+
+# Private, machine-local authoring workflow
+authoring/*
+!authoring/README.md
+**/__pycache__/
+*.py[cod]
+
+# Media is distributed as a separately reviewed resource pack
+/VideoSource/V1/*.mp4
+/*.mp4
+/tests/*.png
+/native/third_party/mpv/*.dll
+
+# Local configuration and temporary files
+.env
+.env.*
+!.env.example
+*.bak
+*.bak.*
+*.log
+*.tmp
+Thumbs.db
+Desktop.ini

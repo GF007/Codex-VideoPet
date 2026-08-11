@@ -1,0 +1,42 @@
+{
+  "productName": "Codex Pet Video Studio",
+  "identifier": "com.local.codex-pet-video-studio",
+  "build": {
+    "beforeDevCommand": "npm run editor:frontend:dev",
+    "devUrl": "http://127.0.0.1:1421/editor.html",
+    "beforeBuildCommand": "npm run editor:frontend:build",
+    "frontendDist": "../dist-editor"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Codex Pet Video Studio",
+        "url": "editor.html",
+        "width": 1440,
+        "height": 900,
+        "minWidth": 1080,
+        "minHeight": 720,
+        "center": true,
+        "visible": true,
+        "transparent": false,
+        "decorations": true,
+        "alwaysOnTop": false,
+        "skipTaskbar": false,
+        "resizable": true,
+        "shadow": true,
+        "dragDropEnabled": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' ipc: http://ipc.localhost; img-src 'self' asset: http://asset.localhost; media-src 'self' asset: http://asset.localhost; style-src 'self' 'unsafe-inline'",
+      "assetProtocol": {
+        "enable": true,
+        "scope": ["$RESOURCE/**"]
+      }
+    }
+  },
+  "bundle": {
+    "active": false
+  }
+}

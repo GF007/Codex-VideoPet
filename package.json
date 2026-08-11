@@ -1,0 +1,52 @@
+{
+  "name": "codex-pet-overlay",
+  "private": true,
+  "version": "0.3.1",
+  "description": "Unofficial native Windows video overlay driven by Codex task hooks",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GF007/Codex-VideoPet.git"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "npm run native:run",
+    "build": "npm run native:build",
+    "native:run": "npm run palette:generate && cargo run --manifest-path native/Cargo.toml --release -- --from-setup",
+    "native:build": "npm run palette:generate && cargo build --manifest-path native/Cargo.toml --release",
+    "native:build:source": "cargo build --manifest-path native/Cargo.toml --release",
+    "native:test": "cargo test --manifest-path native/Cargo.toml",
+    "native:test:source": "cargo test --manifest-path native/Cargo.toml --all-targets -- --skip checked_in_config_matches_the_runtime_state_schema --skip checked_in_palette_matches_an_existing_idle_source",
+    "native:package": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-native.ps1",
+    "native:msi": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-msi.ps1 -AllowUnsignedQa",
+    "native:qa-check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-current-release.ps1 -AllowUnsignedQa",
+    "native:release-check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-current-release.ps1",
+    "native:perf": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/perf-harness.ps1 -ExecutablePath dist-native/CodexPet/CodexPet.exe",
+    "palette:generate": "node scripts/generate-ui-palette.mjs",
+    "palette:test": "node scripts/test-ui-palette.mjs",
+    "legacy:dev": "tauri dev",
+    "legacy:build": "tauri build",
+    "legacy:build:debug": "tauri build --debug --no-bundle",
+    "editor:dev": "tauri dev --features editor --config src-tauri/tauri.editor.conf.json",
+    "editor:build": "tauri build --features editor --config src-tauri/tauri.editor.conf.json",
+    "editor:frontend:dev": "vite --config vite.editor.config.ts --host 127.0.0.1",
+    "editor:frontend:build": "npm run typecheck && vite build --config vite.editor.config.ts",
+    "frontend:build": "vite build",
+    "frontend:dev": "vite --host 127.0.0.1",
+    "video:prepare": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/prepare-video.ps1",
+    "typecheck": "tsc --noEmit",
+    "state": "node scripts/send-state.mjs",
+    "hook:self-test": "cargo run --manifest-path native/Cargo.toml --release -- --hook-self-test",
+    "hooks:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-hooks.ps1",
+    "hooks:uninstall": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/uninstall-hooks.ps1",
+    "source:check": "npm run editor:frontend:build && npm run frontend:build && npm run native:test:source && npm run hook:self-test && npm run native:build:source"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "2.11.1"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.11.4",
+    "typescript": "7.0.2",
+    "vite": "8.2.0"
+  }
+}

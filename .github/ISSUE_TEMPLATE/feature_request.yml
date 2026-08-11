@@ -1,0 +1,27 @@
+name: Feature request
+description: Propose a focused product or developer improvement
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the user problem rather than only the implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: Scope and compatibility boundaries
+      description: Mention Hook privacy, fixed logical states, media-pack compatibility, platform and release implications.

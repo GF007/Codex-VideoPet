@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>Codex Pet</title>
+  </head>
+  <body>
+    <main id="pet" data-state="idle" aria-label="Codex 桌面悬浮宠物">
+      <video
+        id="pet-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        disablepictureinpicture
+        aria-label="桌宠动画"
+      ></video>
+      <section id="status" role="status" aria-live="polite">
+        <span id="state-kicker">CURRENT STATE</span>
+        <strong id="state-label">IDLE</strong>
+        <span id="state-detail">等待 Codex Session</span>
+      </section>
+      <section id="session-tray" aria-labelledby="session-tray-title">
+        <header id="session-tray-header">
+          <span id="session-tray-title">活跃 Sessions</span>
+          <span id="session-count">0</span>
+        </header>
+        <div id="session-empty">等待 Codex 任务事件</div>
+        <ul id="session-list"></ul>
+      </section>
+      <section id="fatal" hidden></section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

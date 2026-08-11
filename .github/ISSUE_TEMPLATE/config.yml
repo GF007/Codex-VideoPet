@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability privately
+    url: https://github.com/GF007/Codex-VideoPet/security/advisories/new
+    about: Do not disclose credentials or sensitive diagnostics in a public issue.

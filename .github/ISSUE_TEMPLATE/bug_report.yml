@@ -1,0 +1,61 @@
+name: Bug report
+description: Report a reproducible Codex VideoPet defect
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include credentials, prompts, transcripts, task IDs, working directories, Hook configuration, or unredacted Session snapshots. Security issues must use private vulnerability reporting.
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: 0.3.1 or commit SHA
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 24H2
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Source build or tests
+        - Hook installation or trust
+        - Session state or deep link
+        - Window or tray UI
+        - Video playback or resources
+        - MSI install, upgrade, or uninstall
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: Provide the smallest redacted sequence that reproduces the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification already performed
+      description: Include commands and whether this is static, unit, runtime, or real Codex evidence.

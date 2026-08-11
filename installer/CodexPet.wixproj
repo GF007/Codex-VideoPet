@@ -1,0 +1,11 @@
+<Project Sdk="WixToolset.Sdk/4.0.5">
+  <PropertyGroup>
+    <OutputType>Package</OutputType>
+    <Platform>x64</Platform>
+    <InstallerPlatform>x64</InstallerPlatform>
+    <OutputName>CodexPet-$(ProductVersion)-x64</OutputName>
+    <OutputPath>$(MSBuildThisFileDirectory)..\dist-native\</OutputPath>
+    <DefineConstants>NativePackageRoot=$(NativePackageRoot);ProductVersion=$(ProductVersion);ProductCode=$(ProductCode)</DefineConstants>
+    <SuppressIces>ICE91</SuppressIces>
+  </PropertyGroup>
+</Project>
