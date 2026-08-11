@@ -1477,6 +1477,68 @@ fn create_player(
     Ok(player)
 }
 
+pub fn validate_runtime_license() -> Result<(), String> {
+    let dll_path = resolve_mpv_dll()?;
+    let library = MpvLibrary::load(&dll_path)?;
+    let (major, minor) = library.api_version();
+    if major != EXPECTED_API_MAJOR || minor < EXPECTED_API_MINOR {
+        return Err(format!(
+            "unsupported libmpv client API {major}.{minor}; need {EXPECTED_API_MAJOR}.{EXPECTED_API_MINOR}+"
+        ));
+    }
+
+    let handle = unsafe { (library.create)() };
+    if handle.is_null() {
+        return Err("mpv_create returned null".to_owned());
+    }
+    let result = unsafe { (library.initialize)(handle) };
+    if result < 0 {
+        let error = library.error(result);
+        unsafe { (library.terminate_destroy)(handle) };
+        return Err(format!("mpv_initialize failed: {error}"));
+    }
+
+    let configuration = library_property(&library, handle, "mpv-configuration")
+        .ok_or_else(|| "libmpv did not expose mpv-configuration".to_owned());
+    let ffmpeg_version = library_property(&library, handle, "ffmpeg-version")
+        .ok_or_else(|| "libmpv did not expose ffmpeg-version".to_owned());
+    unsafe { (library.terminate_destroy)(handle) };
+
+    validate_license_configuration(&configuration?, &ffmpeg_version?)
+}
+
+fn library_property(library: &MpvLibrary, handle: *mut MpvHandle, name: &str) -> Option<String> {
+    let name = CString::new(name).ok()?;
+    let pointer = unsafe { (library.get_property_string)(handle, name.as_ptr()) };
+    if pointer.is_null() {
+        return None;
+    }
+    let value = unsafe { CStr::from_ptr(pointer) }
+        .to_string_lossy()
+        .into_owned();
+    unsafe { (library.mpv_free)(pointer.cast()) };
+    Some(value)
+}
+
+fn validate_license_configuration(configuration: &str, ffmpeg_version: &str) -> Result<(), String> {
+    if !configuration
+        .split_ascii_whitespace()
+        .any(|argument| argument == "-Dgpl=false")
+    {
+        return Err("libmpv is not an LGPL build: -Dgpl=false is missing".to_owned());
+    }
+    if configuration
+        .split_ascii_whitespace()
+        .any(|argument| argument == "-Dgpl=true")
+    {
+        return Err("libmpv configuration explicitly enables GPL code".to_owned());
+    }
+    if ffmpeg_version.trim().is_empty() || ffmpeg_version == "unknown" {
+        return Err("libmpv did not report a usable FFmpeg version".to_owned());
+    }
+    Ok(())
+}
+
 fn resolve_mpv_dll() -> Result<PathBuf, String> {
     let mut candidates = Vec::new();
     if let Some(configured) = std::env::var_os("CODEX_PET_MPV_DLL") {
@@ -1646,6 +1708,25 @@ mod tests {
         assert_eq!(CROSSFADE_FRAMES, 5);
         assert_eq!(NOMINAL_VIDEO_FPS, 24);
         assert_eq!(CROSSFADE_DURATION_MS, 208);
+    }
+
+    #[test]
+    fn runtime_license_requires_an_explicit_lgpl_build() {
+        assert!(validate_license_configuration(
+            "-Dlibmpv=true -Dgpl=false -Dcplayer=false",
+            "N-126039-g6bbc22dc0"
+        )
+        .is_ok());
+        assert!(
+            validate_license_configuration("-Dlibmpv=true", "N-126039-g6bbc22dc0")
+                .unwrap_err()
+                .contains("-Dgpl=false")
+        );
+        assert!(
+            validate_license_configuration("-Dgpl=false -Dgpl=true", "N-126039-g6bbc22dc0")
+                .unwrap_err()
+                .contains("enables GPL")
+        );
     }
 
     #[test]

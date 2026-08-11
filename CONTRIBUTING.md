@@ -10,8 +10,8 @@ source-code and documentation contributions for the Windows native overlay.
 - Node.js 22 and npm
 - .NET 8 and WiX only when working on the MSI path
 
-Start with the source-only checks, which deliberately do not require private
-media or a local libmpv DLL:
+Start with the source-only checks. They do not require private media; the
+libmpv manifest is always checked and a local DLL is verified when present:
 
 ```powershell
 npm ci
@@ -50,5 +50,5 @@ review and the real Windows/Codex acceptance evidence described in
 
 Do not put secrets or sensitive diagnostics in an issue or pull request. Follow
 [`SECURITY.md`](SECURITY.md) for private reporting. Contributions are submitted
-under the repository's current [`LICENSE`](LICENSE) notice unless a different
-written agreement is established.
+under the repository's [MIT License](LICENSE) unless a different written
+agreement is established.

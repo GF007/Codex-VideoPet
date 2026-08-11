@@ -5,6 +5,7 @@ description = "Native Win32 Codex video overlay"
 edition = "2021"
 build = "build.rs"
 publish = false
+license = "MIT"
 repository = "https://github.com/GF007/Codex-VideoPet"
 
 [dependencies]

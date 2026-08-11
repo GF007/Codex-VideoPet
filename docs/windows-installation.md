@@ -48,4 +48,4 @@ Invoke-RestMethod http://127.0.0.1:48193/v1/sessions
 
 ## 包与签名
 
-正式公开发布必须同时满足：MSI 和 `CodexPet.exe` 的 Authenticode 状态为 `Valid`，签名链为预期发布者且带 RFC 3161 时间戳。带 `unsigned-qa` 标记的产物只用于内部测试，不是正式发行包。
+正式包同时携带 `DEPENDENCY_LICENSES.json`、LGPL 2.1/3.0 文本和第三方声明；libmpv 的文件哈希与运行时 `-Dgpl=false` 配置必须通过发行门禁。MSI 和 `CodexPet.exe` 的 Authenticode 状态还必须为 `Valid`，签名链为预期发布者且带 RFC 3161 时间戳。带 `unsigned-qa` 标记的产物只用于内部测试，不是正式发行包。

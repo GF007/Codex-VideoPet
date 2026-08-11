@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "component_id": "codex-pet-libmpv-runtime",
+  "runtime_file": "libmpv-2.dll",
+  "runtime_bytes": 98379776,
+  "runtime_sha256": "F02B4E65ABCE47A6E71DCB37BC79277180A81401A5FCCA08076B19BA219B4208",
+  "distribution_license": "LGPL-3.0-or-later",
+  "license_files": [
+    "LICENSE.LGPL-2.1.txt",
+    "LICENSE.LGPL-3.0.txt"
+  ],
+  "mpv": {
+    "version": "mpv v0.41.0-922-gf4d13e1c2",
+    "commit": "f4d13e1c2c91f3a56e589aef9cb44cbc02e26e47",
+    "source_url": "https://github.com/mpv-player/mpv/archive/f4d13e1c2c91f3a56e589aef9cb44cbc02e26e47.tar.gz",
+    "required_configuration": [
+      "-Dgpl=false",
+      "-Dlibmpv=true",
+      "-Dcplayer=false"
+    ],
+    "forbidden_configuration": [
+      "-Dgpl=true"
+    ]
+  },
+  "ffmpeg": {
+    "version": "N-126039-g6bbc22dc0",
+    "commit": "6bbc22dc09c214b2f5334afa30167fa1990eb5df",
+    "source_url": "https://github.com/FFmpeg/FFmpeg/archive/6bbc22dc09c214b2f5334afa30167fa1990eb5df.tar.gz",
+    "reported_license": "LGPL-3.0-or-later",
+    "configure_args": [
+      "--enable-version3",
+      "--enable-vapoursynth",
+      "--enable-libass",
+      "--enable-libbluray",
+      "--enable-libfreetype",
+      "--enable-libfribidi",
+      "--enable-libfontconfig",
+      "--enable-libharfbuzz",
+      "--enable-libmodplug",
+      "--enable-libopenmpt",
+      "--enable-libmp3lame",
+      "--enable-lcms2",
+      "--enable-libopus",
+      "--enable-libsoxr",
+      "--enable-libspeex",
+      "--enable-libvorbis",
+      "--enable-libbs2b",
+      "--enable-libvpx",
+      "--enable-libwebp",
+      "--enable-libaom",
+      "--enable-libsvtav1",
+      "--enable-libdav1d",
+      "--enable-libuavs3d",
+      "--enable-libzimg",
+      "--enable-openssl",
+      "--enable-libxml2",
+      "--enable-libmysofa",
+      "--enable-libvpl",
+      "--enable-libjxl",
+      "--enable-libplacebo",
+      "--enable-libaribcaption",
+      "--enable-cuda-llvm",
+      "--enable-cuvid",
+      "--enable-nvdec",
+      "--enable-nvenc",
+      "--enable-amf",
+      "--enable-openal",
+      "--enable-opengl"
+    ],
+    "forbidden_configuration": [
+      "--enable-gpl",
+      "--enable-nonfree",
+      "--enable-libx264",
+      "--enable-libx265",
+      "--enable-librubberband"
+    ]
+  },
+  "provenance": {
+    "provider": "zhongfly/mpv-winbuild",
+    "release_tag": "2026-08-10-f4d13e1c2c",
+    "release_url": "https://github.com/zhongfly/mpv-winbuild/releases/tag/2026-08-10-f4d13e1c2c",
+    "asset_name": "mpv-dev-lgpl-x86_64-20260810-git-f4d13e1c2c.7z",
+    "asset_url": "https://github.com/zhongfly/mpv-winbuild/releases/download/2026-08-10-f4d13e1c2c/mpv-dev-lgpl-x86_64-20260810-git-f4d13e1c2c.7z",
+    "asset_sha256": "90D46208A034D37BBDDD85200A88585A739AF56D3D60084985338001C4E5117C",
+    "build_workflow_run": "https://github.com/zhongfly/mpv-winbuild/actions/runs/31386020965",
+    "build_repository_commit": "a237017af09e72a689882afdf0adf6108c33c0fd",
+    "toolchain_repository_commit": "cd1edc11dc6887a50f705717619d879f5a93a488",
+    "lgpl_patch_sha256": "D19C51381FD6464B3041D87E0BFE448A8595BF76A125C98C0AC27582CB2397D7",
+    "github_attestation_verified": true
+  },
+  "audit": {
+    "status": "configuration-verified",
+    "release_eligible": true,
+    "verified_at_utc": "2026-08-11T00:00:00Z",
+    "scope": "Pinned artifact hash, GitHub attestation, libmpv API/configuration, FFmpeg configure flags and reported license"
+  }
+}

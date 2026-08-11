@@ -38,8 +38,10 @@
 
     <Component Id="RootPayloadComponent" Directory="INSTALLFOLDER" Guid="8A28A2D1-E877-4D9D-A71B-D3A7F7A6BA4D">
       <File Id="LibMpvFile" Source="$(var.NativePackageRoot)\libmpv-2.dll" />
+      <File Id="DependencyLicensesFile" Source="$(var.NativePackageRoot)\DEPENDENCY_LICENSES.json" />
       <File Id="InstallationGuideFile" Source="$(var.NativePackageRoot)\INSTALLATION.md" />
-      <File Id="GplLicenseFile" Source="$(var.NativePackageRoot)\LICENSE.GPL-2.0.txt" />
+      <File Id="Lgpl21LicenseFile" Source="$(var.NativePackageRoot)\LICENSE.LGPL-2.1.txt" />
+      <File Id="Lgpl3LicenseFile" Source="$(var.NativePackageRoot)\LICENSE.LGPL-3.0.txt" />
       <File Id="PackageManifestFile" Source="$(var.NativePackageRoot)\manifest.json" />
       <File Id="ReadmeFile" Source="$(var.NativePackageRoot)\README.md" />
       <File Id="ThirdPartyNoticesFile" Source="$(var.NativePackageRoot)\THIRD_PARTY_NOTICES.md" />

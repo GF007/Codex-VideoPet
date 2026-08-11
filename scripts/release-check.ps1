@@ -83,13 +83,18 @@ foreach ($required in @(
     'README.md',
     'INSTALLATION.md',
     'THIRD_PARTY_NOTICES.md',
-    'LICENSE.GPL-2.0.txt',
+    'DEPENDENCY_LICENSES.json',
+    'LICENSE.LGPL-2.1.txt',
+    'LICENSE.LGPL-3.0.txt',
     'VideoSource/V1/video-config.json',
     'VideoSource/V1/ui-palette.json'
 )) {
     if (-not (Test-Path -LiteralPath (Join-Path $PackageRoot $required) -PathType Leaf)) {
         throw "Required release file is missing: $required"
     }
+}
+if (Test-Path -LiteralPath (Join-Path $PackageRoot 'LICENSE.GPL-2.0.txt') -PathType Leaf) {
+    throw 'The obsolete GPL libmpv license payload must not be shipped with the LGPL runtime.'
 }
 
 [xml]$wix = Get-Content -LiteralPath (Join-Path $projectRoot 'installer\CodexPet.wxs') -Raw -Encoding UTF8
@@ -119,6 +124,12 @@ $hookSelfTest = Start-Process -FilePath (Join-Path $PackageRoot 'CodexPet.exe') 
 if ($hookSelfTest.ExitCode -ne 0) {
     throw "Packaged Hook self-test failed with exit code $($hookSelfTest.ExitCode)."
 }
+
+& (Join-Path $projectRoot 'scripts\test-libmpv-license.ps1') `
+    -ManifestPath (Join-Path $PackageRoot 'DEPENDENCY_LICENSES.json') `
+    -RuntimePath (Join-Path $PackageRoot 'libmpv-2.dll') `
+    -ExecutablePath (Join-Path $PackageRoot 'CodexPet.exe') `
+    -RequireRuntime | Out-Null
 
 $signatureTargets = @((Join-Path $PackageRoot 'CodexPet.exe'))
 if (-not [string]::IsNullOrWhiteSpace($MsiPath)) {
@@ -160,6 +171,7 @@ $signatureResults = foreach ($target in $signatureTargets) {
     ManifestEntries = $manifestFiles.Count
     ActualFiles = $actual.Count
     HookSelfTest = 'passed'
-    ReleaseTier = if (@($signatureResults | Where-Object Status -ne 'Valid').Count -eq 0) { 'signed-release' } else { 'unsigned-qa' }
+    LibMpvLicense = 'LGPL-3.0-or-later'
+    ReleaseTier = if ($AllowUnsignedQa) { 'unsigned-qa' } else { 'signed-release' }
     Signatures = @($signatureResults)
 }

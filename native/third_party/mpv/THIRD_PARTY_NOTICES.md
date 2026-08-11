@@ -1,16 +1,16 @@
-# Third-party notices
+# libmpv runtime notice
 
-## libmpv
+Codex Pet uses a dynamically loaded `libmpv-2.dll`. The public source tree does
+not commit that binary; `scripts/install-libmpv-lgpl.ps1` downloads one pinned
+artifact and verifies it before local use or packaging.
 
-- Component: mpv / libmpv
-- Runtime file: `libmpv-2.dll`
-- Version reported by the library: `mpv v0.41.0-39-ga58dd8ac4`
-- Upstream commit: <https://github.com/mpv-player/mpv/commit/a58dd8ac4>
-- Binary provider: <https://sourceforge.net/projects/mpv-player-windows/files/libmpv/>
-- Downloaded archive: `mpv-dev-x86_64-20251228-git-a58dd8a.7z`
-- Archive SHA-256: `DB71A7236D04B1D039B73D75988C72AD3B349CFA97F2C9BBBEC100A4C499A600`
-- DLL SHA-256: `67176A5F00ECC53645B0D3BC6607046FB4225A76D6227A0ED3E7368DDA08EA26`
+The accepted runtime is built from mpv with `-Dgpl=false` and from FFmpeg
+without `--enable-gpl`, `--enable-nonfree`, x264, x265, or Rubber Band. The
+runtime reports mpv `v0.41.0-922-gf4d13e1c2`, FFmpeg
+`N-126039-g6bbc22dc0`, and FFmpeg license `LGPL version 3 or later`.
 
-The bundled build does not declare `-Dgpl=false` in `mpv-configuration`, so it is treated as a GPL build. `LICENSE.GPL-2.0.txt` accompanies internal QA packages. mpv and the codec/runtime libraries linked into this community build retain their respective upstream copyrights and licenses.
-
-This pinned binary is suitable for local development and acceptance testing. Before public or commercial redistribution, complete a dependency-level license audit and satisfy the corresponding-source obligations for the exact binary, or replace it with an audited build produced with the intended feature/license configuration.
+Exact source commits, build workflow, artifact URL, SHA-256 values, accepted
+configuration, and license files are recorded in `DEPENDENCY_LICENSES.json`.
+mpv, FFmpeg, and their linked components retain their upstream copyrights and
+licenses. The application remains dynamically linked so the runtime DLL can be
+replaced with a compatible modified build.

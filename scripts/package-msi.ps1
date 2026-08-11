@@ -6,6 +6,9 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+if ($AllowUnsignedQa -and -not [string]::IsNullOrWhiteSpace($CertificateThumbprint)) {
+    throw 'Choose either -AllowUnsignedQa or -CertificateThumbprint; the release tiers are mutually exclusive.'
+}
 $projectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $cargoPath = Join-Path $projectRoot 'native\Cargo.toml'
 $cargoText = Get-Content -LiteralPath $cargoPath -Raw

@@ -1,7 +1,7 @@
 #![windows_subsystem = "windows"]
 
 use codex_pet_native::{
-    hook_bridge, hooks,
+    hook_bridge, hooks, mpv,
     runtime::RuntimeData,
     settings, setup,
     ui::{self, SingleInstance},
@@ -49,6 +49,10 @@ fn main() {
         }
         Some(argument) if argument == OsStr::new("--validate-video-config") => {
             exit_for_result(validate_video_config_cli());
+            return;
+        }
+        Some(argument) if argument == OsStr::new("--validate-libmpv-license") => {
+            exit_for_result(mpv::validate_runtime_license());
             return;
         }
         _ => {}

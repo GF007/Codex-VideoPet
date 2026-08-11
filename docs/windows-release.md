@@ -8,7 +8,7 @@
 - 版本源：`native/Cargo.toml` 与根 `package.json` 必须一致；Windows Installer 只使用前三段版本号。
 - `UpgradeCode` 跨版本固定；`package-msi.ps1` 根据三段式产品版本确定性生成 MSI `ProductCode`，因此新版本必然变化、同版本重打包保持不变。
 - 交付：x64、per-user MSI，安装到 `%LOCALAPPDATA%\Programs\CodexPet`；便携 ZIP 是附加的诊断产物。
-- 运行时依赖：包内 `CodexPet.exe`、`libmpv-2.dll`、视频目录和许可文本；Hook 不依赖 Node。
+- 运行时依赖：包内 `CodexPet.exe`、固定且校验过的 LGPL `libmpv-2.dll`、`DEPENDENCY_LICENSES.json`、LGPL 文本和视频目录；Hook 不依赖 Node。
 - 信任边界：安装器只合并 Hook 配置，不写 Codex trust；所有 11 项仍需用户在 `/hooks` 中授权。
 - 用户数据：升级/repair/uninstall 都不删除 `%LOCALAPPDATA%\com.local.codex-pet-overlay`。卸载只清本产品 owned Hook 和 HKCU Run 值。
 
@@ -17,6 +17,7 @@
 内部未签 QA：
 
 ```powershell
+npm run libmpv:install
 npm run native:test
 npm run palette:test
 npm run native:msi
@@ -29,7 +30,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-msi.ps1 `
   -CertificateThumbprint '<40-HEX-THUMBPRINT>'
 ```
 
-流程顺序固定为：生成色盘与 release EXE → 签自有 EXE → 生成受控 payload/manifest/ZIP → WiX 生成 MSI → 签 MSI → `release-check.ps1` 读回。第三方 `libmpv-2.dll` 保留上游二进制与 GPL/notice，不冒充本产品签名。
+流程顺序固定为：校验固定 LGPL libmpv → 生成色盘与 release EXE → 签自有 EXE → 生成受控 payload/manifest/ZIP → WiX 生成 MSI → 签 MSI → `release-check.ps1` 读回。第三方 `libmpv-2.dll` 保留上游身份、依赖清单和 LGPL 文本，不冒充本产品签名。
 
 WiX SDK 由 `installer/CodexPet.wixproj` 固定到无需商业 EULA 的 WiX 4 LTS 兼容版本，并由 `dotnet build` 恢复。Windows SDK 需要提供 `signtool.exe`。CI 不得在日志中输出证书私钥或密码。
 
@@ -41,11 +42,12 @@ WiX SDK 由 `installer/CodexPet.wixproj` 固定到无需商业 EULA 的 WiX 4 LT
 - manifest 中每个文件的 bytes/SHA-256 与实际一致，且只有 `manifest.json` 自身不在清单中；
 - 包内 README 与源码 README 相同；
 - 必需的 EXE、libmpv、安装说明、视频配置存在；
+- `DEPENDENCY_LICENSES.json`、LGPL 2.1/3.0 文本、DLL bytes/SHA-256 与固定来源一致，运行时 API 至少为 2.5，且 `mpv-configuration` 明确包含 `-Dgpl=false`；旧 GPL payload 不得残留；
 - 包内 `CodexPet.exe --hook-self-test` 通过；
 - 正式模式下 EXE 与 MSI 的 Authenticode 都为 `Valid`，签名证书 thumbprint 与发行输入一致，并存在 RFC 3161 时间戳；签名门禁必须同时收到 MSI 路径。
 - WiX 中声明的全部 File Source 与受控 package manifest 一一对应，避免动态视频进入便携包却漏出 MSI。
 
-`-AllowUnsignedQa` 只能把签名结论降级为 `unsigned-qa`，不能产生 `signed-release`。
+`-AllowUnsignedQa` 只能把签名结论降级为 `unsigned-qa`，不能产生 `signed-release`。它与 `-CertificateThumbprint` 互斥，避免把 QA 流程误标为正式发行。
 
 ## 安装生命周期验收
 

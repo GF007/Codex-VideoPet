@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.3.1",
   "description": "Unofficial native Windows video overlay driven by Codex task hooks",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GF007/Codex-VideoPet.git"
@@ -22,6 +22,8 @@
     "native:qa-check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-current-release.ps1 -AllowUnsignedQa",
     "native:release-check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-current-release.ps1",
     "native:perf": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/perf-harness.ps1 -ExecutablePath dist-native/CodexPet/CodexPet.exe",
+    "libmpv:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-libmpv-lgpl.ps1",
+    "libmpv:check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-libmpv-license.ps1",
     "palette:generate": "node scripts/generate-ui-palette.mjs",
     "palette:test": "node scripts/test-ui-palette.mjs",
     "legacy:dev": "tauri dev",
@@ -39,7 +41,7 @@
     "hook:self-test": "cargo run --manifest-path native/Cargo.toml --release -- --hook-self-test",
     "hooks:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-hooks.ps1",
     "hooks:uninstall": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/uninstall-hooks.ps1",
-    "source:check": "npm run editor:frontend:build && npm run frontend:build && npm run native:test:source && npm run hook:self-test && npm run native:build:source"
+    "source:check": "npm run libmpv:check && npm run editor:frontend:build && npm run frontend:build && npm run native:test:source && npm run hook:self-test && npm run native:build:source"
   },
   "dependencies": {
     "@tauri-apps/api": "2.11.1"

@@ -12,7 +12,10 @@ $releaseRoot = Join-Path $projectRoot 'native\target\release'
 $exePath = Join-Path $releaseRoot 'codex-pet-native.exe'
 $mpvPath = Join-Path $projectRoot 'native\third_party\mpv\libmpv-2.dll'
 $noticePath = Join-Path $projectRoot 'native\third_party\mpv\THIRD_PARTY_NOTICES.md'
-$licensePath = Join-Path $projectRoot 'native\third_party\mpv\LICENSE.GPL-2.0.txt'
+$dependencyManifestPath = Join-Path $projectRoot 'native\third_party\mpv\DEPENDENCY_LICENSES.json'
+$lgpl21Path = Join-Path $projectRoot 'native\third_party\mpv\LICENSE.LGPL-2.1.txt'
+$lgpl3Path = Join-Path $projectRoot 'native\third_party\mpv\LICENSE.LGPL-3.0.txt'
+$licenseValidatorPath = Join-Path $projectRoot 'scripts\test-libmpv-license.ps1'
 $distRoot = Join-Path $projectRoot 'dist-native'
 $packageRoot = Join-Path $distRoot 'CodexPet'
 $paletteGenerator = Join-Path $projectRoot 'scripts\generate-ui-palette.mjs'
@@ -62,11 +65,23 @@ if (-not $SkipBuild) {
     }
 }
 
-foreach ($required in @($exePath, $mpvPath, $noticePath, $licensePath, $installationGuidePath)) {
+foreach ($required in @(
+    $exePath,
+    $mpvPath,
+    $noticePath,
+    $dependencyManifestPath,
+    $lgpl21Path,
+    $lgpl3Path,
+    $licenseValidatorPath,
+    $installationGuidePath
+)) {
     if (-not (Test-Path -LiteralPath $required -PathType Leaf)) {
         throw "Required package input is missing: $required"
     }
 }
+
+& $licenseValidatorPath -ManifestPath $dependencyManifestPath -RuntimePath $mpvPath `
+    -ExecutablePath $exePath -RequireRuntime | Out-Null
 
 $resolvedProject = [IO.Path]::GetFullPath($projectRoot).TrimEnd('\')
 $resolvedPackage = [IO.Path]::GetFullPath($packageRoot)
@@ -82,7 +97,9 @@ New-Item -ItemType Directory -Path $packageRoot -Force | Out-Null
 Copy-Item -LiteralPath $exePath -Destination (Join-Path $packageRoot 'CodexPet.exe')
 Copy-Item -LiteralPath $mpvPath -Destination (Join-Path $packageRoot 'libmpv-2.dll')
 Copy-Item -LiteralPath $noticePath -Destination (Join-Path $packageRoot 'THIRD_PARTY_NOTICES.md')
-Copy-Item -LiteralPath $licensePath -Destination (Join-Path $packageRoot 'LICENSE.GPL-2.0.txt')
+Copy-Item -LiteralPath $dependencyManifestPath -Destination (Join-Path $packageRoot 'DEPENDENCY_LICENSES.json')
+Copy-Item -LiteralPath $lgpl21Path -Destination (Join-Path $packageRoot 'LICENSE.LGPL-2.1.txt')
+Copy-Item -LiteralPath $lgpl3Path -Destination (Join-Path $packageRoot 'LICENSE.LGPL-3.0.txt')
 Copy-Item -LiteralPath (Join-Path $projectRoot 'README.md') -Destination (Join-Path $packageRoot 'README.md')
 Copy-Item -LiteralPath $installationGuidePath -Destination (Join-Path $packageRoot 'INSTALLATION.md')
 

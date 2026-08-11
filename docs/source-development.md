@@ -1,47 +1,43 @@
-# Source development without bundled media
+# Source development
 
-The public repository is intentionally source-only. It does not track the local
-`libmpv-2.dll`, character videos, MSI/ZIP outputs, performance evidence, or
-machine-local authoring runs.
+The public repository does not track `libmpv-2.dll`, character videos,
+installers, QA evidence, or machine-local authoring output.
 
-## Source-only verification
+## Verify source without media
 
 ```powershell
 npm ci
 npm run source:check
 ```
 
-`source:check` runs both frontend builds, 87 native tests that do not require
-the checked-in media payload, the native Hook privacy/mapping self-test, and a
-Rust release build. Two media-contract tests are skipped because they validate
-the private development pack referenced by `VideoSource/V1/video-config.json`.
+This checks the pinned libmpv manifest, frontend builds, media-independent Rust
+tests, Hook privacy mapping, and the native release build. It does not prove
+video playback, real Codex Hook trust, installer lifecycle, signing, or media
+rights.
 
-This proves compilation and unit-level behavior only. It does not validate
-libmpv loading, hardware decode, animation continuity, real Codex Hook trust,
-deep links, MSI lifecycle, code signing, or media rights.
+## Run locally
 
-## Running the overlay locally
+```powershell
+npm ci
+npm run libmpv:install
+$env:CODEX_PET_VIDEO_DIR = 'C:\absolute\path\to\authorized-video-pack'
+npm run native:build
+.\native\target\release\codex-pet-native.exe --setup
+```
 
-A runnable development setup additionally needs:
+The media root must contain a valid `video-config.json`, `ui-palette.json`, and
+all nine state resources. The setup wizard merges the 11 owned Hooks, but the
+user must still trust every item in Codex `/hooks`.
 
-1. a compatible `libmpv-2.dll`, provided through `CODEX_PET_MPV_DLL`, beside
-   the executable, or in `native/third_party/mpv/`;
-2. a complete nine-state media root provided through the absolute
-   `CODEX_PET_VIDEO_DIR` path or one of the documented runtime fallback roots;
-3. a valid `video-config.json` and `ui-palette.json`; and
-4. user-authorized Codex Hooks for real task-state validation.
+## Validation tiers
 
-Local dependency/media files remain untracked. Do not publish or redistribute
-them until the gates in [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md),
-[`MEDIA_LICENSES.md`](../MEDIA_LICENSES.md), and
-[`windows-release.md`](windows-release.md) are satisfied.
+| Tier | Command | Extra inputs | Meaning |
+|---|---|---|---|
+| Source | `npm run source:check` | None | Compile and source contracts |
+| Runtime | `npm run dev` | libmpv + media | Local window/player behavior |
+| Package QA | `npm run native:msi` | libmpv + approved media | Unsigned internal installer |
+| Release | Signed runbook | Rights + certificate + real-machine evidence | Public artifact gate |
 
-## Test tiers
-
-| Tier | Command | Requires media/DLL | Meaning |
-|---|---|---:|---|
-| Source | `npm run source:check` | No | Compile and unit/source contracts |
-| Media config | `npm run native:test` | Media files | Checked-in config/palette references |
-| Local runtime | `npm run dev` | Yes | Real window/player behavior |
-| Package QA | `npm run native:msi` | Yes | Unsigned internal installer only |
-| Release | Signed runbook | Yes | Legal, signature and real-machine gates |
+Dependency details are in [`libmpv-lgpl.md`](libmpv-lgpl.md). Media and release
+requirements are in [`../MEDIA_LICENSES.md`](../MEDIA_LICENSES.md) and
+[`windows-release.md`](windows-release.md).

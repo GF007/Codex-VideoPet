@@ -2,8 +2,10 @@
 name = "codex-pet-overlay"
 version = "0.1.0"
 description = "Low-overhead Codex desktop video overlay"
-authors = ["Local"]
+authors = ["GF007"]
 edition = "2021"
+license = "MIT"
+repository = "https://github.com/GF007/Codex-VideoPet"
 
 [lib]
 name = "codex_pet_overlay_lib"
