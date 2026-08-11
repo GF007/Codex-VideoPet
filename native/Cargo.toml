@@ -11,7 +11,7 @@ repository = "https://github.com/GF007/Codex-VideoPet"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 tiny_http = "0.12"
-getrandom = "0.3"
+getrandom = "0.4"
 windows = { version = "0.61.3", features = [
   "Win32_Foundation",
   "Win32_Graphics_Direct2D",
