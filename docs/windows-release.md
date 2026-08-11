@@ -21,6 +21,7 @@ npm run libmpv:install
 npm run native:test
 npm run palette:test
 npm run native:msi
+npm run native:qa-installed
 ```
 
 正式签名发行（证书已导入当前用户或机器证书库）：
@@ -43,6 +44,7 @@ WiX SDK 由 `installer/CodexPet.wixproj` 固定到无需商业 EULA 的 WiX 4 LT
 - 包内 README 与源码 README 相同；
 - 必需的 EXE、libmpv、安装说明、视频配置存在；
 - `DEPENDENCY_LICENSES.json`、LGPL 2.1/3.0 文本、DLL bytes/SHA-256 与固定来源一致，运行时 API 至少为 2.5，且 `mpv-configuration` 明确包含 `-Dgpl=false`；旧 GPL payload 不得残留；
+- 正式模式要求依赖清单中的 `audit.public_redistribution_eligible=true`；当前固定 artifact 仅完成配置/来源验证，逐项传递依赖 notice/license 审计未完成时只能生成 `unsigned-qa`；
 - 包内 `CodexPet.exe --hook-self-test` 通过；
 - 正式模式下 EXE 与 MSI 的 Authenticode 都为 `Valid`，签名证书 thumbprint 与发行输入一致，并存在 RFC 3161 时间戳；签名门禁必须同时收到 MSI 路径。
 - WiX 中声明的全部 File Source 与受控 package manifest 一一对应，避免动态视频进入便携包却漏出 MSI。

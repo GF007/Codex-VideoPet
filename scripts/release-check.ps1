@@ -130,6 +130,10 @@ if ($hookSelfTest.ExitCode -ne 0) {
     -RuntimePath (Join-Path $PackageRoot 'libmpv-2.dll') `
     -ExecutablePath (Join-Path $PackageRoot 'CodexPet.exe') `
     -RequireRuntime | Out-Null
+$dependencyManifest = Get-Content -LiteralPath (Join-Path $PackageRoot 'DEPENDENCY_LICENSES.json') -Raw | ConvertFrom-Json
+if (-not $AllowUnsignedQa -and -not $dependencyManifest.audit.public_redistribution_eligible) {
+    throw 'The exact libmpv runtime still needs a completed transitive dependency notice/license review before public redistribution.'
+}
 
 $signatureTargets = @((Join-Path $PackageRoot 'CodexPet.exe'))
 if (-not [string]::IsNullOrWhiteSpace($MsiPath)) {
@@ -172,6 +176,7 @@ $signatureResults = foreach ($target in $signatureTargets) {
     ActualFiles = $actual.Count
     HookSelfTest = 'passed'
     LibMpvLicense = 'LGPL-3.0-or-later'
+    LibMpvPublicRedistributionEligible = [bool]$dependencyManifest.audit.public_redistribution_eligible
     ReleaseTier = if ($AllowUnsignedQa) { 'unsigned-qa' } else { 'signed-release' }
     Signatures = @($signatureResults)
 }

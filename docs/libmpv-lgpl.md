@@ -18,5 +18,11 @@ mode, and the paired FFmpeg build reports LGPL version 3 or later without GPL
 or nonfree configure switches. Exact source and build links are kept in the
 machine-readable dependency manifest.
 
+This is sufficient for local runtime and unsigned package QA, not a completed
+legal review of every transitive library linked into the binary. The manifest
+keeps `public_redistribution_eligible` false until those component notices and
+license obligations are reviewed and packaged. Signed release mode enforces
+that flag.
+
 This dependency boundary does not grant rights to character media and does not
 replace the signing and real-machine gates for a public Windows release.

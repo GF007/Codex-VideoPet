@@ -14,3 +14,8 @@ configuration, and license files are recorded in `DEPENDENCY_LICENSES.json`.
 mpv, FFmpeg, and their linked components retain their upstream copyrights and
 licenses. The application remains dynamically linked so the runtime DLL can be
 replaced with a compatible modified build.
+
+The pinned artifact is approved for local runtime and unsigned package QA.
+Public redistribution remains blocked until every transitive linked library's
+notice and license obligation is reviewed and packaged; this state is recorded
+by `audit.public_redistribution_eligible` in the dependency manifest.

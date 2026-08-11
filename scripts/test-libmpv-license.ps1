@@ -32,8 +32,8 @@ if ($manifest.schema_version -ne 1 -or $manifest.component_id -ne 'codex-pet-lib
 if ($manifest.distribution_license -ne 'LGPL-3.0-or-later') {
     throw 'The libmpv runtime is not approved under the expected LGPL distribution license.'
 }
-if ($manifest.audit.status -ne 'configuration-verified' -or -not $manifest.audit.release_eligible) {
-    throw 'The libmpv dependency manifest is not release eligible.'
+if ($manifest.audit.status -ne 'artifact-configuration-verified' -or -not $manifest.audit.runtime_eligible) {
+    throw 'The libmpv dependency manifest is not approved for local runtime or package QA.'
 }
 foreach ($required in @('-Dgpl=false', '-Dlibmpv=true', '-Dcplayer=false')) {
     if ($required -notin @($manifest.mpv.required_configuration)) {
@@ -110,6 +110,7 @@ if ($runtimePresent) {
     Manifest = $ManifestPath
     DistributionLicense = [string]$manifest.distribution_license
     AuditStatus = [string]$manifest.audit.status
+    PublicRedistributionEligible = [bool]$manifest.audit.public_redistribution_eligible
     RuntimePresent = $runtimePresent
     RuntimeVerified = $runtimePresent
     SourceOnly = -not $runtimePresent

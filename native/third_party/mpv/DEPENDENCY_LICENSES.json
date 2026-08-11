@@ -89,9 +89,11 @@
     "github_attestation_verified": true
   },
   "audit": {
-    "status": "configuration-verified",
-    "release_eligible": true,
+    "status": "artifact-configuration-verified",
+    "runtime_eligible": true,
+    "public_redistribution_eligible": false,
     "verified_at_utc": "2026-08-11T00:00:00Z",
-    "scope": "Pinned artifact hash, GitHub attestation, libmpv API/configuration, FFmpeg configure flags and reported license"
+    "scope": "Pinned artifact hash, GitHub attestation, libmpv API/configuration, FFmpeg configure flags and reported license",
+    "remaining_gate": "Review and package the notices and license obligations for every transitive library linked into the exact runtime before public binary redistribution"
   }
 }

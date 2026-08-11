@@ -11,6 +11,10 @@ source links, provenance, and license files are recorded in
 The packaged runtime is distributed under LGPL-3.0-or-later and remains
 replaceable by a compatible modified build.
 
+The exact runtime is currently approved for local use and unsigned QA only.
+Public binary redistribution stays blocked until the transitive linked-library
+notice/license review recorded in the dependency manifest is complete.
+
 Character media is outside the MIT grant. See
 [`MEDIA_LICENSES.md`](MEDIA_LICENSES.md); unreviewed media must not be committed
 or published.

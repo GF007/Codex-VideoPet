@@ -20,6 +20,7 @@
     "native:package": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-native.ps1",
     "native:msi": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-msi.ps1 -AllowUnsignedQa",
     "native:qa-check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-current-release.ps1 -AllowUnsignedQa",
+    "native:qa-installed": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-installed-msi.ps1",
     "native:release-check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-current-release.ps1",
     "native:perf": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/perf-harness.ps1 -ExecutablePath dist-native/CodexPet/CodexPet.exe",
     "libmpv:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-libmpv-lgpl.ps1",

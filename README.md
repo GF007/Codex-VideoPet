@@ -21,8 +21,8 @@ npm run native:build
 .\native\target\release\codex-pet-native.exe --setup
 ```
 
-`libmpv:install` 下载并校验固定的 LGPL 构建；DLL 不进入 Git。视频目录必须包含合法的 `video-config.json`、`ui-palette.json` 和所有配置引用的视频。<br>
-`libmpv:install` downloads and verifies the pinned LGPL build; the DLL is not committed to Git. The media root must contain a valid `video-config.json`, `ui-palette.json`, and every referenced clip.
+`libmpv:install` 下载并校验固定的 LGPL 构建；DLL 不进入 Git。该构建当前用于本地与 unsigned QA，公开二进制仍需完成传递依赖 notice/license 审计。视频目录必须包含合法配置和所有引用的视频。<br>
+`libmpv:install` downloads and verifies the pinned LGPL build; the DLL is not committed to Git. It is currently approved for local use and unsigned QA; public binaries still require a transitive dependency notice/license review. The media root must contain a valid config and every referenced clip.
 
 只验证源码、不准备视频时：<br>
 To verify the source without media:
