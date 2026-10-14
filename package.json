@@ -45,7 +45,7 @@
     "source:check": "npm run libmpv:check && npm run editor:frontend:build && npm run frontend:build && npm run native:test:source && npm run hook:self-test && npm run native:build:source"
   },
   "dependencies": {
-    "@tauri-apps/api": "2.11.1"
+    "@tauri-apps/api": "2.12.3"
   },
   "devDependencies": {
     "@tauri-apps/cli": "2.11.4",
